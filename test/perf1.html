@@ -1,0 +1,99 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+
+    <style>
+      #board {
+        width: 800px;
+        margin: 0 auto;
+      }
+      .element {
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+        margin: 10px;
+        background: lightblue;
+        border: 1px solid palevioletred;
+        border-radius: 5px;
+      }
+    </style>
+
+    <script>
+      /*
+        создать элемент,
+        размножить его.
+        вычислить размер документа,
+        сгенерировать список точек в его пределах.
+        1) вычислять координаты и сверять вхождение точек
+        2) получать элемент по точке и сверять селектор
+      */
+
+      window.addEventListener('load', function() {
+        /* генерация элементов */
+        var element = document.createElement('div');
+            element.className = 'element';
+
+        var board = document.querySelector('#board');
+        var n = Math.floor((window.innerHeight - 20) / 122);
+
+        for (var i = 0; i < 6*n; i++) {
+          board.appendChild(element.cloneNode());
+        }
+
+        /* описание обработчиков */
+        var handler1 = function(selector, pos) {
+          var bunch = document.querySelectorAll(selector);
+
+          for (var i = 0; i < bunch.length; i++) {
+            var bounds = bunch[i].getBoundingClientRect();
+
+            if (pos.x >= bounds.left && pos.x <= bounds.right && pos.y >= bounds.top && pos.y <= bounds.bottom) {
+              return true;
+            }
+          }
+
+          return false;
+        }
+
+        var handler2 = function(selector, pos) {
+          return document.elementFromPoint(pos.x, pos.y).matches(selector);
+        }
+
+        /* герерация точек */
+        var boardPos = board.getBoundingClientRect();
+        
+        var randomFromTo = function(min, max) {
+          return min + Math.floor(Math.random() * (max - min));
+        }
+
+        var points = [];
+
+        for (var i = 0; i < 1000; i++) {
+          points.push({
+            x: randomFromTo(Math.floor(boardPos.left), Math.floor(boardPos.right)),
+            y: randomFromTo(Math.floor(boardPos.top), Math.floor(boardPos.bottom))
+          });
+        }
+
+        /* проверка */
+        var handlerTester = function(handler, points) {
+          var mark = new Date().getTime();
+
+          for (var i = 0; i < points.length; i++) {
+            handler(points[i]);
+          }
+
+          return new Date().getTime() - mark;
+        }
+
+        var selector = '.element';
+
+        console.log(handlerTester(handler1.bind(null, selector), points));
+        console.log(handlerTester(handler2.bind(null, selector), points));
+      });
+    </script>
+  </head>
+  <body>
+    <div id="board"></div>
+  </body>
+</html>

@@ -1,0 +1,42 @@
+<html>
+  <head>
+    <style>
+      .element, .twin {
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+        border: 1px solid palevioletred;
+        border-radius: 5px;
+      }
+      .element {
+        background: lightblue;
+      }
+      .twin {
+        background: lightsalmon;
+      }
+      #abs, #rel {
+        margin-bottom: 10px;
+      }
+      #abs .element {
+        position: absolute;
+        top: 40px;
+        left: 40px;
+      }
+      #rel .element {
+        position: relative;
+        top: 31px;
+        left: 31px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="abs">
+      <div class="element"></div>
+      <div class="twin"></div>
+    </div>
+    <div id="rel">
+      <div class="element"></div>
+      <div class="twin"></div>
+    </div>
+  </body>
+</html>
